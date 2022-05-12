@@ -1,7 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 require('dotenv').config();
-const { MongoClient, ServerApiVersion,ObjectId } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express()
 const port = process.env.PORT || 5000
 
@@ -18,36 +18,65 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 async function run() {
     try {
         await client.connect()
-        const trucksCollection=client.db("trucksInventories").collection("trucks");
+        const trucksCollection = client.db("trucksInventories").collection("trucks");
         // console.log('db is connected')
         // show trucks inventories
-        app.get('/truck',async(req,res)=>{
-            const query={};
-            const cursor=trucksCollection.find(query)
-            const result=await cursor.toArray()
+        app.get('/truck', async (req, res) => {
+            const query = {};
+            const cursor = trucksCollection.find(query)
+            const result = await cursor.toArray()
             res.send(result)
         });
         // single truck details when click in update button
-        app.get('/truck/:id',async(req,res)=>{
-            const id=req.params.id;
-            const query={_id:ObjectId(id)}
-            const result=await trucksCollection.findOne(query)
+        app.get('/truck/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) }
+            const result = await trucksCollection.findOne(query)
             res.send(result)
         })
+        // update item quantity
+        // app.put('/truck/:id', async (req, res) => {
+        //     const quantity = req.body.newQuantity;
+        //     console.log(quantity)
+        //     const id = req.params.id;
+        //     const filter = { _id: ObjectId(id) };
+        //     const options = { upsert: true };
+        //     const updateDoc = {
+        //         $set: {
+        //             quantity: quantity
+        //         }
+        //     };
+        //     const result = await trucksCollection.updateOne(filter, updateDoc, options)
+        //     res.json(result)
+        // })
+
         // Post data to my item
-        app.post('/truck',async(req,res)=>{
-            const item=req.body;
-            const result=await trucksCollection.insertOne(item)
+        app.post('/truck', async (req, res) => {
+            const item = req.body;
+            const result = await trucksCollection.insertOne(item)
             res.json(result);
         })
         // delete from manageInventories
-        app.delete('/truck/:id',async(req,res)=>{
-            const id=req.params.id;
-            const query={_id:ObjectId(id)};
-            const result=await trucksCollection.deleteOne(query);
+        app.delete('/truck/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await trucksCollection.deleteOne(query);
             res.send(result);
         })
+        // update
+        app.put('/truck/:id', async (req, res) => {
+            const quantity = req.body.totalQuantity;
+            console.log(quantity)
+            const id = req.params.id
+            const filter = { _id: ObjectId(id) }
+            const options = { upsert: true };
+            const updateDoc = {
+                $set: { quantity: quantity },
+            }
+            const result = await trucksCollection.updateOne(filter, updateDoc, options);
+            res.json(result)
 
+        })
     }
     finally {
         // await client.close()
