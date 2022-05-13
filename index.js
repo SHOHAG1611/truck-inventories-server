@@ -34,27 +34,13 @@ async function run() {
             const result = await trucksCollection.findOne(query)
             res.send(result)
         })
-        // update item quantity
-        // app.put('/truck/:id', async (req, res) => {
-        //     const quantity = req.body.newQuantity;
-        //     console.log(quantity)
-        //     const id = req.params.id;
-        //     const filter = { _id: ObjectId(id) };
-        //     const options = { upsert: true };
-        //     const updateDoc = {
-        //         $set: {
-        //             quantity: quantity
-        //         }
-        //     };
-        //     const result = await trucksCollection.updateOne(filter, updateDoc, options)
-        //     res.json(result)
-        // })
 
-        // Post data to my item
+        // Post or create  data in add item route
         app.post('/truck', async (req, res) => {
             const item = req.body;
             const result = await trucksCollection.insertOne(item)
             res.json(result);
+
         })
         // delete from manageInventories
         app.delete('/truck/:id', async (req, res) => {
@@ -128,7 +114,7 @@ async function run(){
             res.json(result)
         })
         // my product
-        app.get('/product',async(req,res)=>{
+        app.get('/truck',async(req,res)=>{
             const email=req.query.email;
             console.log(email)
             const query={email:email};
