@@ -32,13 +32,20 @@ async function run() {
             const result = await trucksCollection.findOne(query)
             res.send(result)
         })
-
         // Post or create  data in add item route
         app.post('/truck', async (req, res) => {
             const item = req.body;
             const result = await trucksCollection.insertOne(item)
             res.json(result);
-
+        })
+        // my items
+        app.get('/myProduct', async (req, res)=>{
+            const email=req.query.email;
+            console.log(email)
+            const query = {email:email}
+            const cursor= trucksCollection.find(query)
+            const result= await cursor.toArray();
+            res.json(result);
         })
         // delete from manageInventories
         app.delete('/truck/:id', async (req, res) => {
@@ -59,24 +66,17 @@ async function run() {
             }
             const result = await trucksCollection.updateOne(filter, updateDoc, options);
             res.json(result)
-
         })
     }
     finally {
         // await client.close()
     }
-
 }
 run().catch(console.dir)
 
 // demo
 app.get('/', (req, res) => {
     res.send('shohag toi ses')
-})
-
-// 
-app.get('/shohag', (req, res)=>{
-    res.send('my name is shohag')
 })
 
 app.listen(port, () => {
