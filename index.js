@@ -76,6 +76,11 @@ app.get('/', (req, res) => {
     res.send('shohag toi ses')
 })
 
+// 
+app.get('/shohag', (req, res)=>{
+    res.send('my name is shohag')
+})
+
 app.listen(port, () => {
     console.log('server is running', port);
 })
