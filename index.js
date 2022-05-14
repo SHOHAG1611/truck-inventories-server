@@ -73,7 +73,7 @@ async function run() {
 }
 run().catch(console.dir)
 
-// test api
+// test
 app.get('/', (req, res) => {
     res.send('server is running')
 })
@@ -82,4 +82,3 @@ app.listen(port, () => {
     console.log('server is running', port);
 })
 
-// https://stackoverflow.com/questions/72238537/why-i-dont-get-req-and-res-in-my-website
