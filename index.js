@@ -17,7 +17,6 @@ async function run() {
     try {
         await client.connect()
         const trucksCollection = client.db("trucksInventories").collection("trucks");
-        // console.log('db is connected')
         // show trucks inventories
         app.get('/truck', async (req, res) => {
             const query = {};
@@ -74,9 +73,9 @@ async function run() {
 }
 run().catch(console.dir)
 
-// demo
+// test api
 app.get('/', (req, res) => {
-    res.send('shohag toi ses')
+    res.send('server is running')
 })
 
 app.listen(port, () => {
